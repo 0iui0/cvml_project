@@ -102,27 +102,32 @@ def render_lidar_on_image(pts_velo, img, calib, img_width, img_height):
         cv2.circle(img, (int(np.round(imgfov_pc_pixel[0, i])),
                          int(np.round(imgfov_pc_pixel[1, i]))),
                    2, color=tuple(color), thickness=-1)
-    plt.imshow(img)
-    plt.yticks([])
-    plt.xticks([])
-    plt.show()
+    # plt.imshow(img)
+    # plt.yticks([])
+    # plt.xticks([])
+    # plt.show()
+    cv2.imshow("Semantic Sementation", img)
+    cv2.waitKey(1)
+
     return img
 
 
 if __name__ == '__main__':
-    # Load image, calibration file, label bbox
-    rgb = cv2.cvtColor(cv2.imread(os.path.join('data/000114_image.png')), cv2.COLOR_BGR2RGB)
-    img_height, img_width, img_channel = rgb.shape
+    for i in range(10000000000):
+        # print('000_%04d'%(i))
+        # Load image, calibration file, label bbox
+        rgb = cv2.cvtColor(cv2.imread(os.path.join('/home/xx/dataset/KITTI_raw/2011_09_26_drive_0056_sync/image_02/data/%010d.png'%(i))), cv2.COLOR_BGR2RGB)
+        img_height, img_width, img_channel = rgb.shape
 
-    # Load calibration
-    calib = read_calib_file('data/000114_calib.txt')
+        # Load calibration
+        calib = read_calib_file('data/000114_calib.txt')
 
-    # Load labels
-    labels = load_label('data/000114_label.txt')
+        # Load labels
+        labels = load_label('data/000114_label.txt')
 
-    # Load Lidar PC
-    pc_velo = load_velo_scan('data/000114.bin')[:, :3]
+        # Load Lidar PC
+        pc_velo = load_velo_scan('/home/xx/dataset/KITTI_raw/2011_09_26_drive_0056_sync/velodyne_points/data/%010d.bin'%(i))[:, :3]
 
-    # render_image_with_boxes(rgb, labels, calib)
-    render_lidar_with_boxes(pc_velo, labels, calib, img_width=img_width, img_height=img_height)
-    # render_lidar_on_image(pc_velo, rgb, calib, img_width, img_height)
+        # render_image_with_boxes(rgb, labels, calib)
+        # render_lidar_with_boxes(pc_velo, labels, calib, img_width=img_width, img_height=img_height)
+        render_lidar_on_image(pc_velo, rgb, calib, img_width, img_height)
